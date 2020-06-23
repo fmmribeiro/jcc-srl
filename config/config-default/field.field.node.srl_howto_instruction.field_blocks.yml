@@ -14,10 +14,12 @@ bundle: srl_howto_instruction
 label: 'Sidebar Blocks'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  plugin_ids:
-    'fixed_block_content:judgement': 'fixed_block_content:judgement'
+  selection: blocks
+  selection_settings:
+    plugin_ids:
+      'fixed_block_content:judgement': 'fixed_block_content:judgement'
 field_type: block_field

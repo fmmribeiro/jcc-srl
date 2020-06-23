@@ -1,0 +1,41 @@
+{# Switchboard items: Primary #}
+{%  if content.field_tiles|render %}
+  {% set primary_items = [] %}
+  {% set primary = paragraph.field_tiles %}
+
+  {% for key, item in paragraph.field_tiles.value %}
+    {# ⇣ This check is important because Tile fields are NOT required. Empty
+     Tiles are possible, and would return the wrong data. #}
+    {% set tile = primary.get(key).entity %}
+
+    {# Get translated child if it exists. #}
+    {% if tile.hasTranslation(primary.langcode) %}
+      {% set tile = tile.getTranslation(primary.langcode) %}
+    {% endif %}
+
+    {# Store each tile in an array for the Pattern component. #}
+    {% set primary_items = primary_items|merge([{
+      brow: tile.field_link.0.value.title,
+      title: tile.field_statement|view,
+      url: tile.field_link.0.url.toString(),
+      icon_link: tile.field_icon_link.value,
+      body: tile.field_body|view
+    }]) %}
+
+  {% endfor %}
+{% endif %}
+
+{% include '@organisms/sections/switchboard/switchboard.twig' with {
+  switchboard: {
+    background_variant: 'has-background-color--dark',
+    layout_variant: paragraph.field_layout_variant.value,
+    headergroup: {
+      brow: content.field_switchboard_title|render ? content.field_switchboard_title : '',
+      title: content.field_switchboard_subtitle|render ? content.field_switchboard_subtitle : ''
+    },
+    body: paragraph.field_body|view,
+    items: {
+      primary: primary_items,
+    },
+  }
+} only %}

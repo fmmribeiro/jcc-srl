@@ -97,7 +97,115 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/messages */ "./src/js/components/messages.js");
 /* harmony import */ var _components_messages__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_components_messages__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_feedback__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/feedback */ "./src/js/components/feedback.js");
+/* harmony import */ var _components_feedback__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_components_feedback__WEBPACK_IMPORTED_MODULE_1__);
 
+
+
+/***/ }),
+
+/***/ "./src/js/components/feedback.js":
+/*!***************************************!*\
+  !*** ./src/js/components/feedback.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function ($) {
+  "use strict";
+
+  Drupal.behaviors.feedback = {
+    attach: function attach() {
+      // Elements.
+      var $window = $(window);
+      var $feedback_trigger = $('[data-feedback^="trigger"]');
+      var $feedback_container = $('[data-feedback="container"]');
+      var $feedback_dialog = $('[data-feedback="dialog"]');
+      var $feedback_confirmation = $('[data-feedback="container"] .webform-confirmation'); // Functions.
+
+      var feedbackOpen = function feedbackOpen() {
+        $feedback_dialog.attr("open", "open");
+        $feedback_container.attr("open", "open");
+      };
+
+      var feedbackDismiss = function feedbackDismiss() {
+        $feedback_container.hide();
+      };
+
+      var feedbackDismissPath = function feedbackDismissPath() {
+        return sessionStorage.feedback_dismissed_page == window.location.pathname;
+      };
+
+      var feedbackConfirmed = function feedbackConfirmed() {
+        return $feedback_confirmation.length > 0;
+      };
+
+      var isScrolledToBottom = function isScrolledToBottom($scrollPosition, $windowHeight, $footPosition) {
+        var $windowHeightHalf = $windowHeight / 2;
+        var $scrollDiff = $scrollPosition + $windowHeight - $windowHeightHalf;
+        var $pageHeightHalf = $footPosition / 2;
+        return $scrollDiff >= $pageHeightHalf;
+      };
+
+      var pageIsShorterThanWindow = function pageIsShorterThanWindow($scrollPosition, $windowHeight, $footPosition) {
+        var $scrollDiff = $footPosition - $windowHeight;
+        return $scrollDiff > $scrollPosition;
+      };
+
+      var isSmallScreen = function isSmallScreen() {
+        var mql = window.matchMedia('(max-width: 40em)');
+        return mql.matches ? true : false;
+      }; // Scroll.
+
+
+      $window.on('scroll', function () {
+        var $scrollPosition = $window.scrollTop();
+        var $windowHeight = $window.height();
+        var $footPosition = $('.jcc-footer').offset().top;
+
+        if (isScrolledToBottom($scrollPosition, $windowHeight, $footPosition) && isSmallScreen() || isSmallScreen() == false) {
+          $feedback_container.attr('visible', 'visible');
+        } else {
+          $feedback_container.removeAttr('visible');
+        }
+
+        if (pageIsShorterThanWindow($scrollPosition, $windowHeight, $footPosition)) {
+          $feedback_container.attr('fixed', 'fixed');
+        } else {
+          $feedback_container.removeAttr('fixed');
+        }
+      }); // Allow user to dismiss completely if confirmation is visible.
+
+      if (feedbackConfirmed() == true) {
+        if (feedbackDismissPath() == true) {
+          feedbackDismiss();
+        } else {
+          window.scrollTo(0, document.body.scrollHeight);
+          $feedback_dialog.removeAttr("style");
+          feedbackOpen();
+        }
+      } // Click.
+
+
+      $feedback_trigger.on("click", function (e) {
+        e.preventDefault;
+
+        if ($feedback_dialog.attr("open")) {
+          if (feedbackConfirmed() && $(this).attr("data-feedback") == "trigger-close") {
+            sessionStorage.feedback_dismissed_page = window.location.pathname;
+            feedbackDismiss();
+          } else {
+            $feedback_container.css("transition", "all .2s");
+            $feedback_dialog.removeAttr("open");
+            $feedback_container.removeAttr("open");
+          }
+        } else {
+          feedbackOpen();
+        }
+      });
+    }
+  };
+})(jQuery, Drupal);
 
 /***/ }),
 
@@ -168,8 +276,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/jacine/Sites/jcc-srl/web/themes/custom/atrium/src/js/atrium.script.js */"./src/js/atrium.script.js");
-module.exports = __webpack_require__(/*! /Users/jacine/Sites/jcc-srl/web/themes/custom/atrium/src/sass/atrium.style.scss */"./src/sass/atrium.style.scss");
+__webpack_require__(/*! /Users/zakiya/Sites/jcc-srl/web/themes/custom/atrium/src/js/atrium.script.js */"./src/js/atrium.script.js");
+module.exports = __webpack_require__(/*! /Users/zakiya/Sites/jcc-srl/web/themes/custom/atrium/src/sass/atrium.style.scss */"./src/sass/atrium.style.scss");
 
 
 /***/ })

@@ -62,13 +62,18 @@
     </div>
   {% endif %}
 
-  {% set nodes_with_hero = [
+  {% set entities_with_hero = [
+    'jcc_form',
+    'overview',
     'srl_howto_instruction',
     'srl_howto',
     'srl_onramp',
+    'srl_wayfinder',
+    'timeline'
   ] %}
 
-  {% if page.title|render and node.bundle() not in nodes_with_hero %}
+  {% if page.title|render and entity_bundle not in entities_with_hero %}
+
     <div class="page__title">
       {{ page.title }}
     </div>

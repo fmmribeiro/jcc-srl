@@ -1,0 +1,20 @@
+uuid: 8c0d7a58-f10f-4859-b7cd-8ede47827bd0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.overview.field_paragraphs
+    - node.type.overview
+  module:
+    - user
+id: node.overview.teaser
+targetEntityType: node
+bundle: overview
+mode: teaser
+content: {  }
+hidden:
+  field_paragraphs: true
+  langcode: true
+  links: true
+  search_api_excerpt: true

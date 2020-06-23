@@ -29,10 +29,18 @@
         {% if timeline_item.field_details.value %}
 
           {% set read_more = {
-            id: 'read-more-' ~ item.id(),
-            title: timeline_item.field_details_link_text.value|default('Read more'|t),
-            content: timeline_item.field_details|view,
+            type: 'modal',
+            modal: {
+              id: 'read-more-' ~ item.id(),
+              button_label: timeline_item.field_details_link_text.value|default('Read more'|t),
+              content: timeline_item.field_details|view,
+            }
           } %}
+        {% endif %}
+
+        {# Get translated child if it exists. #}
+        {% if timeline_item.hasTranslation(items.langcode) %}
+          {% set timeline_item = timeline_item.getTranslation(items.langcode) %}
         {% endif %}
 
         {# Store each item in an array for the Pattern component. #}
@@ -45,10 +53,12 @@
     {% endfor %}
 
     {% include '@organisms/sections/timeline/timeline.twig' with {
-      id: paragraph_id,
-      headergroup: headergroup,
-      timeline: item_content,
-      background_variant: 'has-background-color--dark'
+      timeline: {
+        id: paragraph_id,
+        background_variant: 'has-background-color--dark',
+        headergroup: headergroup,
+        items: item_content,
+      }
     } only %}
 
   {% endif %}

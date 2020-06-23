@@ -292,7 +292,9 @@ class ConditionalDisplay {
     if ($revision_id) {
       $query->condition('revision_id', $revision_id);
     }
-    if ($language_code) {
+    if ($language_code instanceof Drupal\Core\Language\Language) {
+      $query->condition('langcode', $language_code->getId());
+    } elseif (is_string($language_code)) {
       $query->condition('langcode', $language_code);
     }
     return $query->execute();

@@ -1,7 +1,7 @@
 {% extends 'node.html.twig' %}
 {% block content %}
-  {% include '@molecules/blocks/hero/hero.twig' with {
-    breadcrumbs: [
+  {% if node.field_parent.value is not empty %}
+    {% set breadcrumbs =  [
       {
         url: path('entity.node.canonical', { 'node': node.field_parent.entity.id }),
         label: node.field_parent.entity.label,
@@ -9,11 +9,17 @@
       {
         label: label,
       }
-    ],
-    title: content.field_title_display|render ? content.field_title_display : label,
-    body: content.field_column_first|render ? content.field_column_first : '',
-    column_content_right: content.field_column_second|render ? content.field_column_second : '',
-    column_variant: 'has-two-columns-threequarter',
+    ] %}
+  {% endif %}
+
+  {% include '@molecules/blocks/hero/hero.twig' with {
+    hero: {
+      column_variant: 'has-two-columns-threequarter',
+      breadcrumbs: breadcrumbs ? breadcrumbs : null,
+      title: content.field_title_display|render ? content.field_title_display : label,
+      body: content.field_column_first|render ? content.field_column_first : '',
+      column_content_right: content.field_column_second|render ? content.field_column_second : '',
+    }
   } %}
 
   {% if node.field_howto_tabs_title.value and node.field_howto_tabs.value %}
@@ -36,10 +42,10 @@
 
   {% if content.body|render or right_column %}
     {% include '@organisms/sections/text-section/text-section.twig' with {
-      column_content_left: content.body|render ? content.body : '',
-      column_content_right: right_column,
-      column_variant: 'has-two-columns-threequarter',
-      background_variant: 'has-background-color--transparent',
+      text_section: {
+        column_content_left: content.body|render ? content.body : '',
+        column_content_right: right_column,
+      }
     } only %}
   {% endif %}
 
