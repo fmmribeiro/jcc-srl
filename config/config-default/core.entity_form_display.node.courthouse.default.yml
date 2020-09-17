@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.courthouse.field_actions
     - field.field.node.courthouse.field_address
     - field.field.node.courthouse.field_building_hours_friday
     - field.field.node.courthouse.field_building_hours_monday
@@ -10,6 +11,7 @@ dependencies:
     - field.field.node.courthouse.field_building_hours_thursday
     - field.field.node.courthouse.field_building_hours_tuesday
     - field.field.node.courthouse.field_building_hours_wednesday
+    - field.field.node.courthouse.field_case_types
     - field.field.node.courthouse.field_court
     - field.field.node.courthouse.field_filing_hours_friday
     - field.field.node.courthouse.field_filing_hours_monday
@@ -20,6 +22,7 @@ dependencies:
     - field.field.node.courthouse.field_image
     - field.field.node.courthouse.field_link
     - field.field.node.courthouse.field_matters_served
+    - field.field.node.courthouse.field_parties
     - field.field.node.courthouse.field_phone
     - field.field.node.courthouse.field_selfhelp_hours_friday
     - field.field.node.courthouse.field_selfhelp_hours_monday
@@ -27,6 +30,7 @@ dependencies:
     - field.field.node.courthouse.field_selfhelp_hours_thursday
     - field.field.node.courthouse.field_selfhelp_hours_tuesday
     - field.field.node.courthouse.field_selfhelp_hours_wednesday
+    - field.field.node.courthouse.field_watchers
     - node.type.courthouse
   module:
     - field_group
@@ -62,7 +66,7 @@ third_party_settings:
         - field_selfhelp_hours_friday
         - field_selfhelp_hours_summary
       parent_name: ''
-      weight: 7
+      weight: 6
       format_type: fieldset
       region: content
       format_settings:
@@ -80,7 +84,7 @@ third_party_settings:
         - field_filing_hours_friday
         - field_filing_hours_summary
       parent_name: ''
-      weight: 6
+      weight: 5
       format_type: fieldset
       region: content
       format_settings:
@@ -98,7 +102,7 @@ third_party_settings:
         - field_building_hours_friday
         - field_building_hours_summary
       parent_name: ''
-      weight: 5
+      weight: 4
       format_type: fieldset
       region: content
       format_settings:
@@ -107,6 +111,22 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Building hours'
+    group_tags:
+      children:
+        - field_case_types
+        - field_actions
+        - field_parties
+        - field_watchers
+      parent_name: ''
+      weight: 7
+      format_type: fieldset
+      region: content
+      format_settings:
+        id: ''
+        classes: jcc-tag-set
+        description: ''
+        required_fields: true
+      label: Tags
 id: node.courthouse.default
 targetEntityType: node
 bundle: courthouse
@@ -118,6 +138,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_actions:
+    weight: 33
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_address:
     weight: 12
     settings:
@@ -173,6 +199,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_case_types:
+    weight: 32
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_court:
     weight: 1
@@ -251,6 +283,12 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_parties:
+    weight: 34
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_phone:
     weight: 13
     settings:
@@ -305,6 +343,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_watchers:
+    weight: 35
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   langcode:
     type: language_select
